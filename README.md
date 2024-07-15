@@ -43,6 +43,7 @@
 - the use of ward table in the task description meant using sql database
 - the omission of autherization, authentication, gurds, request limiting, testing, diagrams, logging, ...etc to limit the scope of the task
 - the geographical distribution in report meant the country or state (used country to use a smaller file since i don't intend on using a third party api in this task)
+- the task is asking for backend code only so i didn't create a frontend unless i needed it and i used nodejs templates for the frontend
 
 # NOTE
 
