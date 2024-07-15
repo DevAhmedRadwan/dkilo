@@ -1,0 +1,125 @@
+paths:
+  /conversion:
+    get:
+      tags:
+        - Conversion
+      summary: Get all conversions
+      description: Retrieve a list of all conversions with pagination
+      parameters:
+        - in: query
+          name: page
+          required: true
+          schema:
+            type: integer
+            example: 0
+          description: The page number to retrieve
+        - in: query
+          name: pageSize
+          required: true
+          schema:
+            type: integer
+            example: 10
+          description: The number of items per page
+      responses:
+        "200":
+          description: A list of conversions
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Conversion"
+                  total:
+                    type: integer
+                    example: 100
+                  page:
+                    type: integer
+                    example: 0
+                  pageSize:
+                    type: integer
+                    example: 10
+
+    post:
+      tags:
+        - Conversion
+      summary: Create a new conversion
+      description: Create a new conversion entry
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                scanId:
+                  type: integer
+                  example: 1
+                  description: scanId of the conversion
+                conversionCount:
+                  type: integer
+                  example: 2
+                  description: Conversion count for this scan
+      responses:
+        "201":
+          description: Conversion created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Conversion"
+
+  /conversion/{id}:
+    get:
+      tags:
+        - Conversion
+      summary: Get a conversion by ID
+      description: Retrieve a conversion by its ID
+      parameters:
+        - name: id
+          example: 1
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: A conversion
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Conversion"
+        "404":
+          description: Conversion not found
+
+    delete:
+      tags:
+        - Conversion
+      summary: Delete a conversion
+      description: Delete a conversion by its ID
+      parameters:
+        - name: id
+          example: 1
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Conversion deleted
+
+components:
+  schemas:
+    Conversion:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        scanId:
+          type: integer
+          example: 1
+        conversionCount:
+          type: string
+          example: number of conversions for this scan

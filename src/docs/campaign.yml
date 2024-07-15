@@ -1,0 +1,156 @@
+paths:
+  /campaign:
+    get:
+      tags:
+        - Campaign
+      summary: Get all campaigns
+      description: Retrieve a list of all campaigns with pagination
+      parameters:
+        - in: query
+          name: page
+          required: true
+          schema:
+            type: integer
+            example: 0
+          description: The page number to retrieve
+        - in: query
+          name: pageSize
+          required: true
+          schema:
+            type: integer
+            example: 10
+          description: The number of items per page
+      responses:
+        "200":
+          description: A list of campaigns
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Campaign"
+                  total:
+                    type: integer
+                    example: 100
+                  page:
+                    type: integer
+                    example: 0
+                  pageSize:
+                    type: integer
+                    example: 10
+
+    post:
+      tags:
+        - Campaign
+      summary: Create a new campaign
+      description: Create a new campaign entry
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: New Campaign
+                description:
+                  type: string
+                  example: Description of the new campaign
+      responses:
+        "201":
+          description: Campaign created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Campaign"
+
+  /campaign/{id}:
+    get:
+      tags:
+        - Campaign
+      summary: Get a campaign by ID
+      description: Retrieve a campaign by its ID
+      parameters:
+        - name: id
+          in: path
+          example: 1
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: A campaign
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Campaign"
+        "404":
+          description: Campaign not found
+
+    put:
+      tags:
+        - Campaign
+      summary: Update a campaign
+      description: Update an existing campaign by its ID
+      parameters:
+        - name: id
+          in: path
+          example: 1
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: Updated Campaign
+                description:
+                  type: string
+                  example: Updated description of the campaign
+      responses:
+        "200":
+          description: Campaign updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Campaign"
+
+    delete:
+      tags:
+        - Campaign
+      summary: Delete a campaign
+      description: Delete a campaign by its ID
+      parameters:
+        - name: id
+          in: path
+          example: 1
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Campaign deleted
+
+components:
+  schemas:
+    Campaign:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: Campaign Name
+        description:
+          type: string
+          example: Description of the campaign

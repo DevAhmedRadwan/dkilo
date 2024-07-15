@@ -1,0 +1,218 @@
+paths:
+  /qr-code:
+    get:
+      tags:
+        - QRCode
+      summary: Get all QR codes
+      description: Retrieve a list of all QR codes with pagination
+      parameters:
+        - in: query
+          name: page
+          required: true
+          schema:
+            type: integer
+            example: 0
+          description: The page number to retrieve
+        - in: query
+          name: pageSize
+          required: true
+          schema:
+            type: integer
+            example: 10
+          description: The number of items per page
+      responses:
+        "200":
+          description: A list of QR codes
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/QRCode"
+                  total:
+                    type: integer
+                    example: 100
+                  page:
+                    type: integer
+                    example: 0
+                  pageSize:
+                    type: integer
+                    example: 10
+
+    post:
+      tags:
+        - QRCode
+      summary: Create a new QR code
+      description: Create a new QR code entry
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                campaignId:
+                  type: integer
+                  example: 1
+                  description: campainId of the QR code
+                name:
+                  type: string
+                  example: New QR Code
+                  description: name of the qr code
+                description:
+                  type: string
+                  example: Description of the new QR code
+                  description: description of the qr code
+                redirectUrl:
+                  type: string
+                  example: http://www.google.com?indentifier=my-first-qr-code
+                  description: the endpoint this QR code will redirect to
+      responses:
+        "201":
+          description: QR code created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/QRCode"
+
+  /qr-code/{id}:
+    get:
+      tags:
+        - QRCode
+      summary: Get a QR code by ID
+      description: Retrieve a QR code by its ID
+      parameters:
+        - name: id
+          example: 1
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: A QR code
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/QRCode"
+        "404":
+          description: QR code not found
+
+    put:
+      tags:
+        - QRCode
+      summary: Update a QR code
+      description: Update an existing QR code by its ID
+      parameters:
+        - name: id
+          example: 1
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: Updated QR Code
+                  description: name of the qr code
+                description:
+                  type: string
+                  example: Updated description of the QR code
+                  description: description of the qr code
+                redirectUrl:
+                  type: string
+                  example: http://www.google.com?indentifier=my-first-qr-code
+                  description: the endpoint this QR code will redirect to
+      responses:
+        "200":
+          description: QR code updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/QRCode"
+        "404":
+          description: QR code not found
+
+    delete:
+      tags:
+        - QRCode
+      summary: Delete a QR code
+      description: Delete a QR code by its ID
+      parameters:
+        - name: id
+          example: 1
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: QR code deleted
+
+  /qr-code/generate/{id}/{width}/{height}:
+    get:
+      tags:
+        - QRCode
+      summary: Generates a QR code image with the specified dimensions
+      parameters:
+        - name: id
+          example: 1
+          in: path
+          required: true
+          schema:
+            type: integer
+        - in: path
+          name: width
+          example: 500
+          schema:
+            type: integer
+          required: true
+          description: The width of the QR code
+        - in: path
+          name: height
+          example: 500
+          schema:
+            type: integer
+          required: true
+          description: The height of the QR code
+      responses:
+        200:
+          description: A QR code image
+          content:
+            image/png:
+              schema:
+                type: string
+                format: binary
+
+components:
+  schemas:
+    QRCode:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        campaignId:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: QR Code Name
+        description:
+          type: string
+          example: Description of the QR code
+        redirectUrl:
+          type: string
+          example: http://www.google.com?indentifier=my-first-qr-code
+        qrCodeUrl:
+          type: string
+          example: /scan/redirect/1

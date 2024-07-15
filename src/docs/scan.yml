@@ -1,0 +1,167 @@
+paths:
+  /scan:
+    get:
+      tags:
+        - Scan
+      summary: Get all scans
+      description: Retrieve a list of all scans with pagination
+      parameters:
+        - in: query
+          name: page
+          required: true
+          schema:
+            type: integer
+            example: 0
+          description: The page number to retrieve
+        - in: query
+          name: pageSize
+          required: true
+          schema:
+            type: integer
+            example: 10
+          description: The number of items per page
+      responses:
+        "200":
+          description: A list of scans
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Scan"
+                  total:
+                    type: integer
+                    example: 100
+                  page:
+                    type: integer
+                    example: 0
+                  pageSize:
+                    type: integer
+                    example: 10
+
+  /scan/{id}:
+    get:
+      tags:
+        - Scan
+      summary: Get a scan by ID
+      description: Retrieve a scan by its ID
+      parameters:
+        - name: id
+          example: 1
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: A scan
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Scan"
+        "404":
+          description: Scan not found
+
+    put:
+      tags:
+        - Scan
+      summary: Update a scan
+      description: Update a scan entry
+      parameters:
+        - name: id
+          example: 1
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                lat:
+                  type: number
+                  nullable: true
+                  format: float
+                  example: 37.7749
+                long:
+                  type: number
+                  nullable: true
+                  format: float
+                  example: -122.4194
+      responses:
+        "201":
+          description: Scan details updated successfully
+        "404":
+          description: Scan not found
+
+    delete:
+      tags:
+        - Scan
+      summary: Delete a scan
+      description: Delete a scan by its ID
+      parameters:
+        - name: id
+          example: 1
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Scan deleted
+
+  /scan/redirect/{id}:
+    get:
+      tags:
+        - Scan
+      get:
+      summary: Send a fronend template that redirect to URL associated with QR code
+      description: |
+        Send a fronend template that redirect to the URL associated with the specified QR code ID. Tracks the scan event and redirects accordingly.
+      parameters:
+        - name: id
+          example: 1
+          in: path
+          required: true
+          description: ID of the QR code to redirect to
+          type: integer
+      responses:
+        "200":
+          description: request successful
+        "404":
+          description: QR code not found
+
+components:
+  schemas:
+    Scan:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        qrCodeId:
+          type: integer
+          example: 1
+        device:
+          type: string
+          example: Device Information
+        lat:
+          type: number
+          nullable: true
+          format: float
+          example: 37.7749
+        long:
+          type: number
+          nullable: true
+          format: float
+          example: -122.4194
+        timeStamp:
+          type: string
+          format: date-time
+          example: "2024-07-12T14:48:00.000Z"
