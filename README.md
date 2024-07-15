@@ -51,7 +51,7 @@
 
 - currently the project work only on mysql because the migration file is generated using typeorm if you want to use any other database, you will have to generate a new migration file according to your database. this project is tested only with sqlserver and mysql
 
-- if user set the project so he can access the server from you phone it can be tested using mobile phone. this project tested on linux and android
+- if the user set the project so he can access the server his phone it can be tested using mobile phone. this project tested on linux and android
 
 # Installation
 
