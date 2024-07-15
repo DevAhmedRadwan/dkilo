@@ -66,6 +66,7 @@
 
 - docker
   - after installing docker
+  - the database name in the enve must be dkilo becasue this the db that the mysql create on startup
   - create docker.env there example-docker.env for refrance
   - docker compose up --build
 
