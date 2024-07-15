@@ -65,4 +65,10 @@
   - important links will be logged when the project start
 
 - docker
-  - don't have time right now will be added later
+  - after installing docker
+  - create docker.env there example-docker.env for refrance
+  - docker compose up --build
+
+# NOTE
+
+the existing docker setup is intended to be used as a demo not in production (not secure and no volume) or as development (no volume and no hot reload) environment

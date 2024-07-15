@@ -5,7 +5,6 @@
   "scripts": {
     "copy-docs-files": "copyfiles -u 1 ./src/**/*.yml ./dist",
     "copy-geo-files": "copyfiles -u 1 ./src/**/*.geojson ./dist",
-    "build:dev": "rm -rf ./dist && tsc && npm run copy-docs-files && npm run copy-geo-files",
     "build": "rm -rf ./dist && tsc && npm run copy-geo-files",
     "start:dev": "tsx watch --env-file development.env ./src/app.ts",
     "start": "node --env-file production.env ./dist/app.js"

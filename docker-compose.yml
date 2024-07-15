@@ -1,0 +1,53 @@
+version: '3.8'
+
+services:
+  dkilo-redis:
+    image: redis:latest
+    container_name: dkilo-redis
+    ports:
+      - "6379:6379"
+    networks:
+      - dkilo-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  dkilo-mysql:
+    image: mysql:latest
+    container_name: dkilo-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: P@ssw0rd
+      MYSQL_DATABASE: dkilo
+    ports:
+      - "3306:3306"
+    networks:
+      - dkilo-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  dkilo:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: dkilo
+    env_file: "docker.env"
+    command: >
+      sh -c "npm run copy-docs-files && node ./dist/app.js"
+    ports:
+      - "3000:3000"
+    networks:
+      - dkilo-network
+    depends_on:
+      dkilo-redis:
+        condition: service_healthy
+      dkilo-mysql:
+        condition: service_healthy
+
+networks:
+  dkilo-network:
+    driver: bridge
